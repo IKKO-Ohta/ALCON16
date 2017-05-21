@@ -32,8 +32,8 @@ def main(datasetdir,lv):
         code = alcon.ground_truth[bb_id][0]
         if code not in dataset:
             dataset[code] = []
-        if len(dataset[code]) == 5:
-            continue
+   #     if len(dataset[code]) == 5:
+   #         continue
         img = cv2.imread( img_filename )
         feature = MyAlgorithm.feature_extraction(img)
         dataset[code].append(feature)
@@ -41,6 +41,7 @@ def main(datasetdir,lv):
     labels = []
     data = []
     classes = sorted(dataset.keys())
+    print(classes)
     for label, values in dataset.items():
         labels += [classes.index(label)] * len(values)
         data += values
@@ -53,6 +54,7 @@ def main(datasetdir,lv):
 
     outputfile = "./model.pkl"
     joblib.dump((classes, classifier), outputfile)
+    import pdb; pdb.set_trace()
 
 
 if __name__ == "__main__":
