@@ -17,7 +17,7 @@ predict関数を編集してください．
 import os.path
 import cv2
 from sklearn.externals import joblib
-
+import keras
 
 class MyAlgorithm(object):
     """
@@ -28,9 +28,10 @@ class MyAlgorithm(object):
 
         # もし学習済み識別器等を読み込む必要があればここで
         #trained_file = os.path.join(datasetdir, "model.pkl")
-        trained_file = "./model.pkl"
-        self.classes, self.classifier = joblib.load(trained_file)
-
+        trained_file = "./model2.pkl"
+  #      self.classes, self.classifier = joblib.load(trained_file)
+        self.classifier = keras.models.load_model(trained_file)
+        self.classes = joblib.load("./model.pkl")
         
     def predict(self, full_img, bbox):
         """
@@ -46,10 +47,12 @@ class MyAlgorithm(object):
 
         # 画像から特徴抽出
         feature = self.feature_extraction(target_img)
-
+        feature = feature.reshape((1,32,32,3))
+        
         # 識別器にかける
-        recog_result = self.classifier.predict([feature])
+        recog_result = self.classifier.predict_classes(feature)
 
+        print(recog_result)
         codes = []
         for res in recog_result:
             codes.append(self.classes[res])
@@ -63,4 +66,5 @@ class MyAlgorithm(object):
         特徴抽出のサンプル（画像を引き伸ばしてベクトル化しているだけ）
         """
         img_ = cv2.resize(img, (32, 32))
-        return img_.reshape(-1)
+        import pdb; pdb.set_trace()
+        return img_/255.0

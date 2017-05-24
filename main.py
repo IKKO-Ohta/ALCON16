@@ -4,9 +4,7 @@
 第21回PRMUアルゴリズムコンテスト評価用コード
 以下の様に実行してください
 （path/to/datasetdir は，データセットの場所）
-
     python main.py path/to/datasetdir 1
-
 """
 
 import sys
@@ -65,4 +63,3 @@ if __name__ == "__main__":
         quit()
 
     main( sys.argv[1], sys.argv[2] )
-
